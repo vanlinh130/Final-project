@@ -288,6 +288,25 @@ footer .input-group-text {
 }
 /* Blog card end */
 
+/* Single Blog  */
+.single-blog-card a {
+    font-size: 18px;
+    color: var(--color-777777);
+    margin-bottom: 20px;
+}
+
+.single-blog-card h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-1c1c1b);
+}
+
+.single-blog-card p {
+    color: var(--color-777777);
+    font-size: 14pxs;
+}
+/* Single Blog End */
+
 /* Product card */
 .product-card {
     padding: 15px;
@@ -622,5 +641,35 @@ footer .input-group-text {
     font-size: 19px;
     font-weight: 500;
     color: var(--color-777777);
+}
+
+.auth-card p {
+    font-size: 13px;
+    color: var(--color-777777);
+}
+
+.auth-card .form-control {
+    height: 50px;
+    background-color: var(--color-f5f5f7);
+    color: var(--color-777777);
+    font-size: 14px;
+    border-radius: 10px;
+    border-color: transparent;
+}
+
+.auth-card a {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-1c1c1b);
+}
+
+.auth-card .signup {
+    background-color: var(--color-febd69);
+    color: var(--color-131921);
+}
+
+.auth-card .signup:hover {
+    background-color: var(--color-131921);
+    color: white;
 }
 /* auth card login end*/
