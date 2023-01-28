@@ -7,6 +7,7 @@ import ReactImageZoom from 'react-image-zoom';
 import Color from './../components/Color';
 import { TbGitCompare } from 'react-icons/tb';
 import { AiOutlineHeart } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 const SingleProduct = () => {
     const props = {
@@ -16,6 +17,16 @@ const SingleProduct = () => {
         img: 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg',
     };
     const [orderedProduct, setOrderedProduct] = useState(true);
+
+    const copyToClipboard = (text) => {
+        console.log('text', text);
+        var textField = document.createElement('textarea');
+        textField.innerText = text;
+        document.body.appendChild(textField);
+        textField.select();
+        document.execCommand('copy');
+        textField.remove();
+    };
 
     return (
         <>
@@ -76,7 +87,7 @@ const SingleProduct = () => {
                                         Write a Review
                                     </a>
                                 </div>
-                                <div className="border-bottom py-3">
+                                <div className="py-3">
                                     <div className="d-flex gap-10 align-items-center my-2">
                                         <h3 className="product-heading">Type :</h3>
                                         <p className="product-data">Watch</p>
@@ -143,10 +154,32 @@ const SingleProduct = () => {
                                             <a href="/">
                                                 <TbGitCompare className="fs-5 me-2" /> Add to Compare
                                             </a>
+                                        </div>
+                                        <div>
                                             <a href="/">
                                                 <AiOutlineHeart className="fs-5 me-2" /> Add to Wishlist
                                             </a>
                                         </div>
+                                    </div>
+                                    <div className="d-flex gap-10 flex-column my-3">
+                                        <h3 className="product-heading">Shipping & Returns :</h3>
+                                        <p className="product-data">
+                                            Free shipping and returns available on all orders! <br />
+                                            We ship all US domestic orders within
+                                            <b style={{ marginLeft: '5px' }}>5-10 business days!</b>
+                                        </p>
+                                    </div>
+                                    <div className="d-flex gap-10 align-items-center my-3">
+                                        <h3 className="product-heading">Product Link :</h3>
+                                        <Link
+                                            onClick={() => {
+                                                copyToClipboard(
+                                                    'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg',
+                                                );
+                                            }}
+                                        >
+                                            Copy Product Link
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

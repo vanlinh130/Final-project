@@ -702,7 +702,7 @@ footer .input-group-text {
 }
 
 .main-product-image .js-image-zoom__zoomed-image {
-    left: 40px !important;
+    left: 55px !important;
     padding: 10px;
     background-color: white;
     border-radius: 10px;
@@ -721,7 +721,7 @@ footer .input-group-text {
 }
 
 .main-product-details {
-    padding: 20px;
+    padding: 30px 20px;
     background-color: white;
     border-radius: 10px;
 }
