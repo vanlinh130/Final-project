@@ -71,6 +71,9 @@ a {
     margin-bottom: 30px;
 }
 
+.form-control {
+    border-color: #ccc;
+}
 /* Header Part */
 .header-top-strip {
     border-bottom: 1px solid var(--color-3b4149);
@@ -548,6 +551,10 @@ footer .input-group-text {
     top: 13%;
 }
 
+.border-bottom {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
 /* Our Store end */
 
 /* Contact */
@@ -726,10 +733,6 @@ footer .input-group-text {
     border-radius: 10px;
 }
 
-.border-bottom {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-}
-
 .main-product-details h3 {
     font-size: 18px;
     font-weight: 600;
@@ -858,3 +861,24 @@ footer .input-group-text {
     width: 15%;
 }
 /* Cart page end */
+
+/* Checkout page */
+.product-price {
+    top: -8px;
+    right: 2px;
+    width: 21px;
+    height: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.total {
+    font-size: 14px;
+    color: var(--color-1c1c1b);
+}
+
+.total-price {
+    font-size: 16px;
+    color: var(--color-777777);
+}
+/* Checkout page end */
