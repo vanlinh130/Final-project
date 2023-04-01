@@ -5,7 +5,7 @@ import { BiCategoryAlt } from 'react-icons/bi';
 import { FaClipboardList, FaBloggerB } from 'react-icons/fa';
 import { ImBlog } from 'react-icons/im';
 import { IoIosNotifications } from 'react-icons/io';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate, Outlet, Link } from 'react-router-dom';
 
 import { Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
@@ -153,17 +153,37 @@ const MainLayout = () => {
                             <IoIosNotifications className="fs-4" />
                             <span className="badge bg-warning rounded-circle p-1 position-absolute">3</span>
                         </div>
-                        <div className="d-flex gap-3 align-items-center">
-                            <div className="header-img">
+                        <div className="d-flex gap-3 align-items-center ">
+                            <div className="header-img ">
                                 <img
                                     src="https://yt3.ggpht.com/yti/AHXOFjVggUoXItikpkPcWXyzRJ8NsYQKHnHoXNNTCrJa=s88-c-k-c0x00ffffff-no-rj-mo"
                                     alt="images"
                                 />
                             </div>
-                            <div>
+                            <div type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                 <h5 className="mb-0">vanlinh</h5>
                                 <p className="mb-0">linhvanle130@gamil.com</p>
                             </div>
+                            <ul className="dropdown-menu mt-2" aria-labelledby="dropdownMenuLink">
+                                <li>
+                                    <Link
+                                        className="dropdown-item py-1 mb-1"
+                                        style={{ height: 'auto', lineHeight: '20px' }}
+                                        to=""
+                                    >
+                                        View Profile
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        className="dropdown-item py-1 mb-1"
+                                        style={{ height: 'auto', lineHeight: '20px' }}
+                                        to="/"
+                                    >
+                                        Sign Out
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </Header>

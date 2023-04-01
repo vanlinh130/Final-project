@@ -1,5 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
+// import { BiEdit } from 'react-icons/bi';
+import { AiFillDelete } from 'react-icons/ai';
 
 const columns = [
     {
@@ -18,6 +20,10 @@ const columns = [
         title: 'Status',
         dataIndex: 'status',
     },
+    {
+        title: 'Action',
+        dataIndex: 'icon',
+    },
 ];
 
 const data1 = [];
@@ -27,13 +33,14 @@ for (let i = 0; i < 46; i++) {
         name: `Edward King ${i}`,
         product: 32,
         status: `London, Park Lane no. ${i}`,
+        icon: <AiFillDelete />,
     });
 }
 
 const ProductList = () => {
     return (
         <div>
-            <h3 className="mb-4">Products</h3>
+            <h3 className="mb-4 title">Products</h3>
             <div>
                 <Table columns={columns} dataSource={data1} />
             </div>

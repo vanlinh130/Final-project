@@ -5,7 +5,7 @@ const Forgotpassword = () => {
     return (
         <div className="py-5" style={{ background: '#ffd333', minHeight: '100vh' }}>
             <div className="my-5 w-25 bg-white rounded-3 mx-auto p-4 position-relative" style={{ top: '100px' }}>
-                <h4 className="text-center">Forgot Password</h4>
+                <h4 className="text-center title">Forgot Password</h4>
                 <p className="text-center">Please Enter your register email to get reset password mail.</p>
                 <form action="">
                     <CustomInput type="text" label="Email Address" i_id="email" />
