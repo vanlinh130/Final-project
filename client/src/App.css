@@ -15,6 +15,7 @@
     --color-777777: #777777;
     --color-d1cece: #d1cece;
     --color-1c1c1b: #1c1c1b;
+    --color-d73a49: #d73a49;
 }
 
 body {
@@ -73,6 +74,11 @@ a {
 
 .form-control {
     border-color: #ccc;
+}
+
+.error {
+    color: var(--color-d73a49);
+    font-size: 12px;
 }
 /* Header Part */
 .header-top-strip {

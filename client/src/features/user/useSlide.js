@@ -1,37 +1,101 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { authService } from './userService';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { authService } from './userService'
+import { toast } from 'react-toastify'
 
 export const registerUser = createAsyncThunk('auth/register', async (userData, thunkAPI) => {
     try {
-        return await authService.register(userData);
+        return await authService.register(userData)
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+});
+export const loginUser = createAsyncThunk('auth/login', async (userData, thunkAPI) => {
+    try {
+        return await authService.login(userData);
     } catch (error) {
         return thunkAPI.rejectWithValue(error);
     }
 });
 
+export const getUserProductWishlist = createAsyncThunk('user/wishlist', async (thunkAPI) => {
+    try {
+        return await authService.getUserWishlist();
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+});
+
+const getCustomerFromLocalStorage = localStorage.getItem('customer')
+    ? JSON.parse(localStorage.getItem('customer'))
+    : null;
+
 const initalstate = {
-    user: '',
+    user: getCustomerFromLocalStorage,
     isError: false,
     isSuccess: false,
     isLoading: false,
-    message: '',
-};
+    message: ''
+}
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState: initalstate,
     reducers: {},
-    extraReducers: (builder) => {
+    extraReducers: builder => {
         builder
-            .addCase(registerUser.pending, (state) => {
+            .addCase(registerUser.pending, state => {
+                state.isLoading = true
+            })
+            .addCase(registerUser.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isError = false
+                state.isSuccess = true
+                state.createdUser = action.payload
+                if (state.isSuccess === true) {
+                    toast.info('User Create Successfully')
+                }
+            })
+            .addCase(registerUser.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.isSuccess = false
+                state.message = action.error
+                if (state.isError === true) {
+                    toast.error(action.error)
+                }
+            })
+            .addCase(loginUser.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(registerUser.fulfilled, (state) => {
+            .addCase(loginUser.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isError = false;
                 state.isSuccess = true;
+                state.user = action.payload;
+                if (state.isSuccess === true) {
+                    localStorage.setItem('token', action.payload.token);
+                    toast.info('User Logged In Successfully');
+                }
             })
-            .addCase(registerUser.rejected, (state, action) => {
+            .addCase(loginUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+                if (state.isError === true) {
+                    toast.error(action.error);
+                }
+            })
+            .addCase(getUserProductWishlist.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getUserProductWishlist.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.getUserWishlist = action.payload;
+            })
+            .addCase(getUserProductWishlist.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
@@ -40,4 +104,4 @@ export const authSlice = createSlice({
     },
 });
 
-export default authSlice.reducer;
+export default authSlice.reducer
