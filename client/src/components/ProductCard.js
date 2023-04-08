@@ -6,6 +6,7 @@ import view from '../images/view.svg';
 import addCart from '../images/add-cart.svg';
 import wish from '../images/wish.svg';
 import watch1 from '../images/watch-1.jpg';
+import watch from '../images/watch.jpg';
 import { useDispatch } from 'react-redux';
 import { addToWishlist } from '../features/products/productSlice';
 
@@ -25,16 +26,7 @@ const ProductCard = (props) => {
             {data?.map((item, index) => {
                 return (
                     <div key={index} className={`${location.pathname === '/product' ? `gr-${grid}` : 'col-3 mb-3'}`}>
-                        <Link
-                            // to={`${
-                            //     location.pathname === '/'
-                            //         ? '/product/:id'
-                            //         : location.pathname === '/product/:id'
-                            //         ? '/product/1'
-                            //         : ':id'
-                            // }`}
-                            className="product-card position-relative"
-                        >
+                        <div className="product-card position-relative">
                             <div className="wishlist-icon  position-absolute">
                                 <button
                                     className="border-0 bg-transparent"
@@ -47,7 +39,7 @@ const ProductCard = (props) => {
                             </div>
                             <div className="product-image">
                                 <img
-                                    src={item?.images[0]?.url}
+                                    src={item?.images[0]?.url ? item?.images[0]?.url : watch}
                                     className="img-fluid mx-auto"
                                     alt="product images"
                                     width={160}
@@ -76,15 +68,15 @@ const ProductCard = (props) => {
                                     <button className="border-0 bg-transparent">
                                         <img src={prodcompare} alt="compare" />
                                     </button>
-                                    <button className="border-0 bg-transparent">
+                                    <Link to={'/product/' + item?._id} className="border-0 bg-transparent">
                                         <img src={view} alt="view" />
-                                    </button>
+                                    </Link>
                                     <button className="border-0 bg-transparent">
                                         <img src={addCart} alt="add card" />
                                     </button>
                                 </div>
                             </div>
-                        </Link>
+                        </div>
                     </div>
                 );
             })}

@@ -1,12 +1,12 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { authService } from './userService'
-import { toast } from 'react-toastify'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { authService } from './userService';
+import { toast } from 'react-toastify';
 
 export const registerUser = createAsyncThunk('auth/register', async (userData, thunkAPI) => {
     try {
-        return await authService.register(userData)
+        return await authService.register(userData);
     } catch (error) {
-        return thunkAPI.rejectWithValue(error)
+        return thunkAPI.rejectWithValue(error);
     }
 });
 export const loginUser = createAsyncThunk('auth/login', async (userData, thunkAPI) => {
@@ -25,6 +25,22 @@ export const getUserProductWishlist = createAsyncThunk('user/wishlist', async (t
     }
 });
 
+export const addProdToCart = createAsyncThunk('user/cart/add', async (cartData, thunkAPI) => {
+    try {
+        return await authService.addToCart(cartData);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+});
+
+export const getUserCart = createAsyncThunk('user/cart/get', async (thunkAPI) => {
+    try {
+        return await authService.getCart();
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
+});
+
 const getCustomerFromLocalStorage = localStorage.getItem('customer')
     ? JSON.parse(localStorage.getItem('customer'))
     : null;
@@ -34,34 +50,34 @@ const initalstate = {
     isError: false,
     isSuccess: false,
     isLoading: false,
-    message: ''
-}
+    message: '',
+};
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState: initalstate,
     reducers: {},
-    extraReducers: builder => {
+    extraReducers: (builder) => {
         builder
-            .addCase(registerUser.pending, state => {
-                state.isLoading = true
+            .addCase(registerUser.pending, (state) => {
+                state.isLoading = true;
             })
             .addCase(registerUser.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.isError = false
-                state.isSuccess = true
-                state.createdUser = action.payload
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.createdUser = action.payload;
                 if (state.isSuccess === true) {
-                    toast.info('User Create Successfully')
+                    toast.info('User Create Successfully');
                 }
             })
             .addCase(registerUser.rejected, (state, action) => {
-                state.isLoading = false
-                state.isError = true
-                state.isSuccess = false
-                state.message = action.error
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
                 if (state.isError === true) {
-                    toast.error(action.error)
+                    toast.error(action.error);
                 }
             })
             .addCase(loginUser.pending, (state) => {
@@ -100,8 +116,41 @@ export const authSlice = createSlice({
                 state.isError = true;
                 state.isSuccess = false;
                 state.message = action.error;
+            })
+            .addCase(addProdToCart.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(addProdToCart.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.cartProduct = action.payload;
+                if (state.isSuccess) {
+                    toast.success('Product Added to Cart');
+                }
+            })
+            .addCase(addProdToCart.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+            })
+            .addCase(getUserCart.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getUserCart.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.cartProducts = action.payload;
+            })
+            .addCase(getUserCart.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
             });
     },
 });
 
-export default authSlice.reducer
+export default authSlice.reducer;
