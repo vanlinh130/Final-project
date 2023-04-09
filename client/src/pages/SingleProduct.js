@@ -7,23 +7,39 @@ import ReactImageZoom from 'react-image-zoom';
 import Color from './../components/Color';
 import { TbGitCompare } from 'react-icons/tb';
 import { AiOutlineHeart } from 'react-icons/ai';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Container from './../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAProduct } from '../features/products/productSlice';
 import { toast } from 'react-toastify';
-import { addProdToCart } from '../features/user/useSlide';
+import { addProdToCart, getUserCart } from '../features/user/useSlide';
 
 const SingleProduct = () => {
     const [color, setColor] = useState(null);
     const [quantity, setQuantity] = useState(1);
-
+    const [alreadyAdded, setAlreadyAdded] = useState(false);
     const location = useLocation();
-    console.log(location);
+
+    const navigate = useNavigate();
+    // console.log(location);
     const getProductId = location.pathname.split('/')[2];
     const dispatch = useDispatch();
     const productState = useSelector((state) => state.product.singleproduct);
+    const cartState = useSelector((state) => state.auth.cartProducts);
     console.log(productState);
+
+    useEffect(() => {
+        dispatch(getAProduct(getProductId));
+        dispatch(getUserCart());
+    }, []);
+
+    useEffect(() => {
+        for (let index = 0; index < cartState?.length; index++) {
+            if (getProductId === cartState[index]?.productId?._id) {
+                setAlreadyAdded(true);
+            }
+        }
+    }, []);
 
     const uploadCart = () => {
         if (color === null) {
@@ -31,12 +47,9 @@ const SingleProduct = () => {
             return false;
         } else {
             dispatch(addProdToCart({ productId: productState?._id, quantity, color, price: productState?.price }));
+            navigate('/cart');
         }
     };
-
-    useEffect(() => {
-        dispatch(getAProduct(getProductId));
-    }, []);
 
     const props = {
         width: 400,
@@ -139,36 +152,51 @@ const SingleProduct = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                                    <h3 className="product-heading">Color :</h3>
-                                    <Color setColor={setColor} colorData={productState?.color} />
-                                </div>
+                                {alreadyAdded === false && (
+                                    <>
+                                        <div className="d-flex gap-10 flex-column mt-2 mb-3">
+                                            <h3 className="product-heading">Color :</h3>
+                                            <Color setColor={setColor} colorData={productState?.color} />
+                                        </div>
+                                    </>
+                                )}
                                 <div className="d-flex align-items-center gap-10 flex-row mt-2 mb-3">
-                                    <h3 className="product-heading">Quantity :</h3>
-                                    <div className="">
-                                        <input
-                                            type="number"
-                                            name=""
-                                            min={1}
-                                            max={10}
-                                            className="form-control"
-                                            style={{ width: '70px' }}
-                                            id=""
-                                            onChange={(e) => setQuantity(e.target.value)}
-                                            value={quantity}
-                                        />
-                                    </div>
-                                    <div className="d-flex align-items-center gap-30">
+                                    {alreadyAdded === false && (
+                                        <>
+                                            <h3 className="product-heading">Quantity :</h3>
+                                            <div className="">
+                                                <input
+                                                    type="number"
+                                                    name=""
+                                                    min={1}
+                                                    max={10}
+                                                    className="form-control"
+                                                    style={{ width: '70px' }}
+                                                    id=""
+                                                    onChange={(e) => setQuantity(e.target.value)}
+                                                    value={quantity}
+                                                />
+                                            </div>
+                                        </>
+                                    )}
+                                    <div
+                                        className={
+                                            // eslint-disable-next-line no-useless-concat
+                                            alreadyAdded ? 'ms-0' : 'ms-5' + 'd-flex align-items-center gap-30 ms-5'
+                                        }
+                                    >
                                         <button
                                             className="button border-0"
                                             // data-bs-toggle="modal"
                                             // data-bs-target="#staticBackdrop"
                                             type="button"
-                                            onClick={() => uploadCart()}
+                                            onClick={() => {
+                                                alreadyAdded ? navigate('/cart') : uploadCart();
+                                            }}
                                         >
-                                            Add to Cart
+                                            {alreadyAdded ? 'Go to Cart' : 'Add to Cart'}
                                         </button>
-                                        <button className="button signup">Buy it Now</button>
+                                        {/* <button className="button signup">Buy it Now</button> */}
                                     </div>
                                 </div>
                                 <div className="d-flex align-items-center gap-15">
