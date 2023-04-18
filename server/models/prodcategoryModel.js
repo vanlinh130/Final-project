@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"); // Erase if already required
 
+// Declare the Schema of the Mongo model
 var prodcategorySchema = new mongoose.Schema(
   {
     title: {
@@ -14,4 +15,5 @@ var prodcategorySchema = new mongoose.Schema(
   }
 );
 
+//Export the model
 module.exports = mongoose.model("PCategory", prodcategorySchema);

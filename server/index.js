@@ -8,7 +8,10 @@ const blogRouter = require("./routes/blogRoute");
 const categoryRouter = require("./routes/prodcategoryRoute");
 const blogcategoryRouter = require("./routes/blogCatRoute");
 const brandRouter = require("./routes/brandRoute");
+const enqRouter = require("./routes/enqRoute");
+const uploadRouter = require("./routes/uploadRoute");
 const couponRouter = require("./routes/couponRoute");
+const colorRouter = require("./routes/colorRoute");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan")
 require("dotenv").config();
@@ -27,6 +30,9 @@ app.use("/api/category", categoryRouter);
 app.use("/api/blogcategory", blogcategoryRouter);
 app.use("/api/brand", brandRouter);
 app.use("/api/coupon", couponRouter);
+app.use("/api/color", colorRouter);
+app.use("/api/enquiry", enqRouter);
+app.use("/api/upload", uploadRouter);
 
 // not Found
 app.use(notFound);
@@ -35,7 +41,7 @@ app.use(errorHandler);
 // Server runing
 require("./config/dbConnect");
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running at PORT ${PORT}`);
 });

@@ -1,29 +1,30 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"); // Erase if already required
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-
-const userSchema = new mongoose.Schema(
+// Declare the Schema of the Mongo model
+var userSchema = new mongoose.Schema(
   {
     firstname: {
       type: String,
-      require: true,
+      required: true,
     },
     lastname: {
       type: String,
-      require: true,
+      required: true,
     },
     email: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     mobile: {
       type: String,
-      require: true,
+      required: true,
+      unique: true,
     },
     password: {
       type: String,
-      require: true,
+      required: true,
     },
     role: {
       type: String,
@@ -53,32 +54,26 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// ma hoa password
 userSchema.pre("save", async function (next) {
-  // kiem tra mat khau
   if (!this.isModified("password")) {
     next();
   }
-
   const salt = await bcrypt.genSaltSync(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
-
-// kiem tra password de login
 userSchema.methods.isPasswordMatched = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-
-//kiem tra đat lai mật khẩu
 userSchema.methods.createPasswordResetToken = async function () {
   const resettoken = crypto.randomBytes(32).toString("hex");
   this.passwordResetToken = crypto
     .createHash("sha256")
     .update(resettoken)
     .digest("hex");
-  this.passwordResetExpires = Date.now() + 30 * 60 * 100; //10 minutes
+  this.passwordResetExpires = Date.now() + 30 * 60 * 1000; // 10 minutes
   return resettoken;
 };
 
+//Export the model
 module.exports = mongoose.model("User", userSchema);

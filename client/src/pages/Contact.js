@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import React from 'react';
-import BreadCrumb from '../components/BreadCrumb';
-import Meta from '../components/Meta';
+import { useDispatch } from 'react-redux';
 import { AiOutlineHome, AiOutlineMail } from 'react-icons/ai';
 import { BiInfoCircle, BiPhoneCall } from 'react-icons/bi';
-import Container from './../components/Container';
-import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import * as yup from 'yup';
+import BreadCrumb from '../components/BreadCrumb';
+import Meta from '../components/Meta';
+import Container from './../components/Container';
 import { createQuery } from '../features/contact/contactSlide';
 
 const contactSchema = yup.object({

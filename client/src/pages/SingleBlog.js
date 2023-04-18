@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
+import { HiOutlineArrowLeft } from 'react-icons/hi';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
-import { HiOutlineArrowLeft } from 'react-icons/hi';
-import { Link, useLocation } from 'react-router-dom';
 import blog1 from '../images/blog-1.jpg';
 import Container from './../components/Container';
-import { useDispatch, useSelector } from 'react-redux';
 import { getABlog } from '../features/blogs/blogSlice';
 
 const SingleBlog = () => {

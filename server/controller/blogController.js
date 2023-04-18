@@ -5,7 +5,6 @@ const validateMongoDbId = require("../utils/validateMongodbId");
 const { cloudinaryUploadImg } = require("../utils/cloudinary");
 const fs = require("fs");
 
-// Tao blog
 const createBlog = asyncHandler(async (req, res) => {
   try {
     const newBlog = await Blog.create(req.body);
@@ -15,7 +14,6 @@ const createBlog = asyncHandler(async (req, res) => {
   }
 });
 
-// cap nhat blog
 const updateBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
@@ -29,7 +27,6 @@ const updateBlog = asyncHandler(async (req, res) => {
   }
 });
 
-// lay ra 1 blog bang id
 const getBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
@@ -49,8 +46,6 @@ const getBlog = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
-
-// Lay ra tat ca blog
 const getAllBlogs = asyncHandler(async (req, res) => {
   try {
     const getBlogs = await Blog.find();
@@ -60,7 +55,6 @@ const getAllBlogs = asyncHandler(async (req, res) => {
   }
 });
 
-// Xoa 1 blog
 const deleteBlog = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
@@ -72,7 +66,6 @@ const deleteBlog = asyncHandler(async (req, res) => {
   }
 });
 
-// like Blog
 const liketheBlog = asyncHandler(async (req, res) => {
   const { blogId } = req.body;
   validateMongoDbId(blogId);
@@ -119,8 +112,6 @@ const liketheBlog = asyncHandler(async (req, res) => {
     res.json(blog);
   }
 });
-
-// like Blog
 const disliketheBlog = asyncHandler(async (req, res) => {
   const { blogId } = req.body;
   validateMongoDbId(blogId);
@@ -129,7 +120,7 @@ const disliketheBlog = asyncHandler(async (req, res) => {
   // find the login user
   const loginUserId = req?.user?._id;
   // find if the user has liked the blog
-  const isDisliked = blog?.isDisliked;
+  const isDisLiked = blog?.isDisliked;
   // find if the user has disliked the blog
   const alreadyLiked = blog?.likes?.find(
     (userId) => userId?.toString() === loginUserId?.toString()
@@ -145,7 +136,7 @@ const disliketheBlog = asyncHandler(async (req, res) => {
     );
     res.json(blog);
   }
-  if (isDisliked) {
+  if (isDisLiked) {
     const blog = await Blog.findByIdAndUpdate(
       blogId,
       {

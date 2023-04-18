@@ -1,20 +1,14 @@
 import React from 'react';
 import ReactStars from 'react-rating-stars-component';
 import { Link, useLocation } from 'react-router-dom';
-import prodcompare from '../images/prodcompare.svg';
-import view from '../images/view.svg';
-import addCart from '../images/add-cart.svg';
-import wish from '../images/wish.svg';
-import watch1 from '../images/watch-1.jpg';
-import watch from '../images/watch.jpg';
 import { useDispatch } from 'react-redux';
+import view from '../images/view.svg';
+import wish from '../images/wish.svg';
 import { addToWishlist } from '../features/products/productSlice';
 
 const ProductCard = (props) => {
     const { grid, data } = props;
     const dispatch = useDispatch();
-
-    console.log(data);
     let location = useLocation();
 
     const addToWish = (id) => {
@@ -39,12 +33,15 @@ const ProductCard = (props) => {
                             </div>
                             <div className="product-image">
                                 <img
-                                    src={item?.images[0]?.url ? item?.images[0]?.url : watch}
-                                    className="img-fluid mx-auto"
+                                    src={
+                                        item?.images[0]?.url
+                                            ? item?.images[0]?.url
+                                            : 'https://salt.tikicdn.com/cache/750x750/ts/product/a9/a5/58/cdbe994e29336c343a37a63a043c158b.jpg.webp'
+                                    }
+                                    className="img-items img-fluid mx-auto"
                                     alt="product images"
                                     width={160}
                                 />
-                                <img src={watch1} className="img-fluid mx-auto" alt="product images" width={160} />
                             </div>
                             <div className="product-details">
                                 <h6 className="brand">{item?.brand}</h6>
@@ -65,15 +62,15 @@ const ProductCard = (props) => {
 
                             <div className="action-bar position-absolute">
                                 <div className="d-flex flex-column gap-15">
-                                    <button className="border-0 bg-transparent">
+                                    {/* <button className="border-0 bg-transparent">
                                         <img src={prodcompare} alt="compare" />
-                                    </button>
+                                    </button> */}
                                     <Link to={'/product/' + item?._id} className="border-0 bg-transparent">
                                         <img src={view} alt="view" />
                                     </Link>
-                                    <button className="border-0 bg-transparent">
+                                    {/* <button className="border-0 bg-transparent">
                                         <img src={addCart} alt="add card" />
-                                    </button>
+                                    </button> */}
                                 </div>
                             </div>
                         </div>

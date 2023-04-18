@@ -1,28 +1,103 @@
-import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { BsSearch } from 'react-icons/bs';
-import compare from '../images/compare.svg';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import { BsSearch, BsMoon, BsSun } from 'react-icons/bs';
+import { MdLanguage } from 'react-icons/md';
+import { FiUser } from 'react-icons/fi';
+import Tippy from '@tippyjs/react/headless';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+
 import wishlist from '../images/wishlist.svg';
 import user from '../images/user.svg';
 import cart from '../images/cart.svg';
 import menu from '../images/menu.svg';
+import { getAProduct } from '../features/products/productSlice';
 
 const Header = () => {
+    const { t } = useTranslation();
+    const { i18n } = useTranslation();
+    const dispatch = useDispatch();
+
+    const handleChangeLng = (lng) => {
+        i18n.changeLanguage(lng);
+        localStorage.setItem('lng', lng);
+    };
+
+    const [background, setBackground] = useState(false);
+
+    const cartState = useSelector((state) => state?.auth?.cartProducts);
+    const authState = useSelector((state) => state.auth);
+    const [total, setTotal] = useState(null);
+    const productState = useSelector((state) => state?.product?.product);
+    const [productOpt, setProductOpt] = useState([]);
+    const [paginate, setPaginate] = useState(true);
+    const navigate = useNavigate();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        let sum = 0;
+        for (let index = 0; index < cartState?.length; index++) {
+            sum = sum + Number(cartState[index].quantity) * cartState[index].price;
+            setTotal(sum);
+        }
+    }, [cartState]);
+
+    useEffect(() => {
+        let data = [];
+        for (let index = 0; index < productState.length; index++) {
+            const element = productState[index];
+            data.push({ id: index, prod: element?._id, name: element?.title });
+        }
+        setProductOpt(data);
+    }, [productState]);
+
+    const handleLogout = () => {
+        localStorage.clear();
+        window.location.reload();
+    };
+
     return (
         <>
             <header className="header-top-strip py-3">
                 <div className="container-xxl">
                     <div className="row">
                         <div className="col-6">
-                            <p className="text-white mb-0">Free Shipping Over $100 & Free Returns</p>
+                            <p className="text-white mb-0">{t('free_shipping')}</p>
                         </div>
-                        <div className="col-6">
-                            <p className="text-end text-white  mb-0">
-                                Hotline:
-                                <a className="text-white" href="tel: +84 787945995">
-                                    +84 787945995
-                                </a>
-                            </p>
+                        <div className="header-top-info col-6">
+                            <div className="d-flex align-items-center text-white mb-0 gap-10">
+                                <div className="header-phone d-flex align-items-center">
+                                    <p className="mb-0">Hotline:</p>
+                                    <a className="text-white " href="tel: +84 787945995">
+                                        +84 787945995
+                                    </a>
+                                </div>
+                                <Tippy
+                                    delay={[0, 200]}
+                                    interactive
+                                    placement="bottom-start"
+                                    render={(attrs) => (
+                                        <div className="box" tabIndex="-1" {...attrs}>
+                                            <div className="language">
+                                                <ul>
+                                                    <li onClick={() => handleChangeLng('vi')}>Tiếng Việt</li>
+                                                    <li onClick={() => handleChangeLng('en')}>English</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    )}
+                                >
+                                    <div className="d-flex align-items-center ">
+                                        <MdLanguage />
+                                        <p className="mb-0">Language</p>
+                                    </div>
+                                </Tippy>
+                                <div className="background-main" onClick={() => setBackground(!background)}>
+                                    {background ? <BsMoon /> : <BsSun />}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -40,12 +115,18 @@ const Header = () => {
                         </div>
                         <div className="col-5">
                             <div className="input-group">
-                                <input
-                                    type="text"
-                                    className="form-control py-2"
-                                    placeholder="Search Product Here..."
-                                    aria-label="Search Product Here..."
-                                    aria-describedby="basic-addon2"
+                                <Typeahead
+                                    id="pagination-example"
+                                    onPaginate={() => console.log('Results paginated')}
+                                    onChange={(selected) => {
+                                        navigate(`/product/${selected[0]?.prod}`);
+                                        dispatch(getAProduct(selected[0]?.prod));
+                                    }}
+                                    options={productOpt}
+                                    paginate={paginate}
+                                    labelKey={'name'}
+                                    minLength={2}
+                                    placeholder="Search for Products here..."
                                 />
                                 <span className="input-group-text p-3" id="basic-addon2">
                                     <BsSearch className="fs-6" />
@@ -55,35 +136,64 @@ const Header = () => {
                         <div className="col-5">
                             <div className="header-upper-links d-flex align-items-center justify-content-between">
                                 <div>
-                                    <Link to="/compare-product" className="d-flex align-items-center gap-10 text-white">
-                                        <img src={compare} alt="compare" />
-                                        <p className="mb-0">
-                                            Compare <br /> Products
-                                        </p>
-                                    </Link>
-                                </div>
-                                <div>
                                     <Link to="/wishlist" className="d-flex align-items-center gap-10 text-white">
                                         <img src={wishlist} alt="wishlist" />
                                         <p className="mb-0">
-                                            Favourite <br /> wishlist
+                                            {t('favourite')}
+                                            <br />
+                                            {t('wishlist')}
                                         </p>
                                     </Link>
                                 </div>
                                 <div>
-                                    <Link to="/login" className="d-flex align-items-center gap-10 text-white">
-                                        <img src={user} alt="user" />
-                                        <p className="mb-0">
-                                            Login <br /> My Account
-                                        </p>
-                                    </Link>
+                                    <Tippy
+                                        delay={[0, 200]}
+                                        interactive
+                                        placement="bottom-start"
+                                        render={(attrs) => (
+                                            <div className="box" tabIndex="-1" {...attrs}>
+                                                <div className="header-upper-profile">
+                                                    <ul>
+                                                        <li>
+                                                            <Link
+                                                                to={authState?.user === null ? '/login' : '/my-profile'}
+                                                                className="profile-link gap-2"
+                                                            >
+                                                                <FiUser />
+                                                                {authState?.user === null ? 'Log In' : 'Log Out'}
+                                                            </Link>
+                                                        </li>
+                                                        {/* <li>
+                                                            <Link to="/profile" className="profile-link gap-2">
+                                                                <CiLogin />
+                                                                Profile
+                                                            </Link>
+                                                        </li> */}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        )}
+                                    >
+                                        <div className="d-flex align-items-center gap-10 text-white">
+                                            <img src={user} alt="user" />
+                                            {authState?.user === null ? (
+                                                <p className="mb-0">
+                                                    Log in <br /> My Account
+                                                </p>
+                                            ) : (
+                                                <p className="mb-0">Welcome {authState?.user?.firstname}</p>
+                                            )}
+                                        </div>
+                                    </Tippy>
                                 </div>
                                 <div>
                                     <Link to="/cart" className="d-flex align-items-center gap-10 text-white">
                                         <img src={cart} alt="cart" />
                                         <div className="d-flex flex-column gap-10">
-                                            <span className="badge bg-white text-dark">0</span>
-                                            <p className="mb-0">$ 500</p>
+                                            <span className="badge bg-white text-dark">
+                                                {cartState?.length ? cartState?.length : 0}
+                                            </span>
+                                            <p className="mb-0">$ {total ? total : 0}</p>
                                         </div>
                                     </Link>
                                 </div>
@@ -133,8 +243,16 @@ const Header = () => {
                                     <div className="d-flex align-items-center gap-15">
                                         <NavLink to="/">Home</NavLink>
                                         <NavLink to="/product">Our Store</NavLink>
+                                        <NavLink to="/my-orders">My Orders</NavLink>
                                         <NavLink to="/blogs">Blogs</NavLink>
                                         <NavLink to="/contact">Contact</NavLink>
+                                        <button
+                                            onClick={handleLogout}
+                                            className="border border-0 bg-transparent text-white text-uppercase"
+                                            type="button"
+                                        >
+                                            Log Out
+                                        </button>
                                     </div>
                                 </div>
                             </div>

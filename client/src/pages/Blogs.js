@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment/moment';
+
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
 import BlogCard from './../components/BlogCard';
 import Container from '../components/Container';
-import { useDispatch, useSelector } from 'react-redux';
 import { getAllBlogs } from '../features/blogs/blogSlice';
-import moment from 'moment/moment';
 
 const Blogs = () => {
     const blogState = useSelector((state) => state?.blog?.blog);

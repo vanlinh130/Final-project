@@ -6,7 +6,11 @@ const BlogCard = (props) => {
     return (
         <div className="blog-card">
             <div className="card-image">
-                <img src={image ? image : 'images/blog-1.jpg'} className="img-fluid w-100" alt="blog" />
+                <img
+                    src={image ? image : 'https://cdn.pixabay.com/photo/2015/05/31/10/55/man-791049_960_720.jpg'}
+                    className=" img-fluid w-100"
+                    alt="blog"
+                />
             </div>
             <div className="blog-content">
                 <p className="date">{date}</p>

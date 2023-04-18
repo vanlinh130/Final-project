@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { AiFillDelete } from 'react-icons/ai';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
-import watch from '../images/watch.jpg';
-import { AiFillDelete } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
 import Container from './../components/Container';
-import { useDispatch, useSelector } from 'react-redux';
 import { deleteCartProduct, getUserCart, updateCartProduct } from '../features/user/useSlide';
 
 const Cart = () => {
     const dispatch = useDispatch();
     const [productUpdateDetail, setProductUpdateDetail] = useState(null);
     const userCartState = useSelector((state) => state.auth.cartProducts);
+    console.log(userCartState);
+    const [totalAmount, setTotalAmount] = useState(null);
+    console.log(totalAmount);
 
     useEffect(() => {
         dispatch(getUserCart());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -29,6 +32,7 @@ const Cart = () => {
                 dispatch(getUserCart());
             }, 200);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productUpdateDetail]);
 
     const deleteACartProduct = (id) => {
@@ -38,7 +42,13 @@ const Cart = () => {
         }, 200);
     };
 
-    const updateACartProduct = () => {};
+    useEffect(() => {
+        let sum = 0;
+        for (let index = 0; index < userCartState?.length; index++) {
+            sum = sum + Number(userCartState[index].quantity) * userCartState[index].price;
+            setTotalAmount(sum);
+        }
+    }, [userCartState]);
 
     return (
         <>
@@ -62,14 +72,22 @@ const Cart = () => {
                                     >
                                         <div className="cart-col-1 gap-15 d-flex align-items-center">
                                             <div className="w-25">
-                                                <img src={watch} className="img-fluid" alt="product" />
+                                                <img
+                                                    src={
+                                                        item?.productId?.images[0]?.url
+                                                            ? item?.productId?.images[0]?.url
+                                                            : 'https://salt.tikicdn.com/cache/750x750/ts/product/a9/a5/58/cdbe994e29336c343a37a63a043c158b.jpg.webp'
+                                                    }
+                                                    className="img-fluid"
+                                                    alt="product"
+                                                />
                                             </div>
                                             <div className="w-75">
                                                 <p>{item?.productId.title}</p>
                                                 <p className="d-flex gap-3">
                                                     Color:
                                                     <ul className="colors ps-0 ">
-                                                        <li style={{ backgroundColor: item?.color.title }}></li>
+                                                        <li style={{ backgroundColor: item?.color?.title }}></li>
                                                     </ul>
                                                 </p>
                                             </div>
@@ -121,13 +139,15 @@ const Cart = () => {
                             <Link to="/product" className="button">
                                 Continue To Shopping
                             </Link>
-                            <div className="d-flex flex-column align-items-end">
-                                <h4>SubTotal: $ 1000</h4>
-                                <p>Taxes and shipping calculated at checkout</p>
-                                <Link to="/checkout" className="button">
-                                    Checkout
-                                </Link>
-                            </div>
+                            {(totalAmount !== null || totalAmount !== 0) && (
+                                <div className="d-flex flex-column align-items-end">
+                                    <h4>SubTotal: $ {totalAmount}</h4>
+                                    <p>Taxes and shipping calculated at checkout</p>
+                                    <Link to="/checkout" className="button">
+                                        Checkout
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

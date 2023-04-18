@@ -45,7 +45,11 @@ const Wishlist = () => {
                                         />
                                         <div className="product-card-image">
                                             <img
-                                                src={item?.images[0]?.url ? item?.images[0]?.url : 'images/watch.jpg'}
+                                                src={
+                                                    item?.images[0]?.url
+                                                        ? item?.images[0]?.url
+                                                        : 'https://salt.tikicdn.com/cache/750x750/ts/product/a9/a5/58/cdbe994e29336c343a37a63a043c158b.jpg.webp'
+                                                }
                                                 className="img-fluid w-100"
                                                 alt="watch"
                                             />
