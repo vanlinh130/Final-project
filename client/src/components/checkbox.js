@@ -1,11 +1,12 @@
 import React from 'react';
+import message from '../images/messenger.png';
 
 const Checkbox = () => {
     const checkboxs = [
         {
             id: 1,
             Link: 'https://www.facebook.com/profile.php?id=100033522635647',
-            image: 'https://bizweb.dktcdn.net/100/468/709/themes/882182/assets/icon_facebook.svg?1681370918143',
+            image: message,
         },
         {
             id: 2,
@@ -14,12 +15,12 @@ const Checkbox = () => {
         },
     ];
     return (
-        <div className="checkbox">
-            <div className="checkbox-list">
+        <div className="fixed bottom-[10px] left-[50px] z-50 max-sm:hidden">
+            <div className="flex flex-col">
                 {checkboxs.map((item, index) => {
                     return (
                         <a href={item.Link} key={index} className="checkbox-item">
-                            <img src={item.image} alt="images" />
+                            <img src={item.image} alt="images" className="w-full h-full" />
                         </a>
                     );
                 })}

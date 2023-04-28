@@ -1,19 +1,17 @@
 import React from 'react';
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import '../src/locales/i18n';
+import '../src/components/ToggleTheme';
 import Layout from './components/Layout';
-import Home from './pages/Home';
+import Home from './pages/home/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import OurStore from './pages/OurStore';
 import Blogs from './pages/Blogs';
 import Wishlist from './pages/Wishlist';
 import SingleBlog from './pages/SingleBlog';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import RefundPolicy from './pages/RefundPolicy';
-import ShippingPolicy from './pages/ShippingPolicy';
-import TermAndConditions from './pages/TermAndConditions';
 import SingleProduct from './pages/SingleProduct';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
@@ -80,11 +78,6 @@ function App() {
                                 </PrivateRoutes>
                             }
                         />
-
-                        <Route path="privacy-policy" element={<PrivacyPolicy />} />
-                        <Route path="refund-policy" element={<RefundPolicy />} />
-                        <Route path="shipping-policy" element={<ShippingPolicy />} />
-                        <Route path="Term-conditions" element={<TermAndConditions />} />
                     </Route>
 
                     <Route

@@ -41,9 +41,9 @@ export const createAnOrder = createAsyncThunk('user/cart/create-order', async (o
     }
 });
 
-export const getUserCart = createAsyncThunk('user/cart/get', async (thunkAPI) => {
+export const getUserCart = createAsyncThunk('user/cart/get', async (data, thunkAPI) => {
     try {
-        return await authService.getCart();
+        return await authService.getCart(data);
     } catch (error) {
         return thunkAPI.rejectWithValue(error);
     }
@@ -57,9 +57,9 @@ export const getOrders = createAsyncThunk('user/order/get', async (thunkAPI) => 
     }
 });
 
-export const deleteCartProduct = createAsyncThunk('user/cart/product/delete', async (id, thunkAPI) => {
+export const deleteCartProduct = createAsyncThunk('user/cart/product/delete', async (data, thunkAPI) => {
     try {
-        return await authService.removeProductFromCart(id);
+        return await authService.removeProductFromCart(data);
     } catch (error) {
         return thunkAPI.rejectWithValue(error);
     }
@@ -133,7 +133,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (state.isError === true) {
-                    toast.error(action.error);
+                    toast.error(action.payload.response.data.message);
                 }
             })
             .addCase(loginUser.pending, (state) => {
@@ -155,7 +155,7 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 if (state.isError === true) {
-                    toast.error(action.error);
+                    toast.error(action.payload.response.data.message);
                 }
             })
             .addCase(getUserProductWishlist.pending, (state) => {
@@ -292,9 +292,19 @@ export const authSlice = createSlice({
                 state.isError = false;
                 state.isSuccess = true;
                 state.updatedUser = action.payload;
-                if (state.isSuccess) {
-                    toast.success('Profile Update Successfully !');
-                }
+                let currentUserData = JSON.parse(localStorage.getItem('customer'));
+                let newUserData = {
+                    _id: currentUserData?._id,
+                    token: currentUserData.token,
+                    firstname: action?.payload?.firstname,
+                    lastname: action?.payload?.lastname,
+                    email: action?.payload?.email,
+                    mobile: action?.payload?.mobile,
+                };
+                console.log(newUserData);
+                localStorage.setItem('customer', JSON.stringify(newUserData));
+                state.user = newUserData;
+                toast.success('Profile Update Successfully !');
             })
             .addCase(updateProfile.rejected, (state, action) => {
                 state.isLoading = false;

@@ -1,18 +1,20 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Meta from '../../components/Meta';
 import CustomInput from '../../components/CustomInput';
 import { forgotPasswordToken } from '../../features/user/useSlide';
 import { useDispatch } from 'react-redux';
+import forgotPassword from '../../images/auth/forgot-password.png';
+import Footer from '../../components/Footer';
+import Header from './header';
 
 const signUpSchema = yup.object({
     email: yup.string().email('Email Should Be Valid').required('Email Address is Required'),
 });
 
 const ForgotPassword = () => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const formik = useFormik({
@@ -22,69 +24,58 @@ const ForgotPassword = () => {
         validationSchema: signUpSchema,
         onSubmit: (values) => {
             dispatch(forgotPasswordToken(values));
-            // navigate('/login');
         },
     });
     return (
         <>
             <Meta title="Forgot Password" />
-            <div className="container-auth">
-                <div className="preview-header">
-                    <div className="header-heading">
-                        <Link to="/" className="text-white">
-                            Dev Corner
-                        </Link>
-                    </div>
-                    <button className="preview-header-btn">Buy Now</button>
-                </div>
-                <div className="auth">
-                    <div className="auth-content">
-                        <div className="auth-left">
-                            <div className="auth-left-heading">
-                                <img src="" alt="images" />
-                                <h1>Dev Corner</h1>
-                            </div>
-                            <div className="left-description">
-                                <h2>
-                                    Collect & Sell <br />
-                                    Your <br />
-                                    AWESOMENFTs
-                                </h2>
-                            </div>
+            <Header title="FORGOT PASSWORD" />
+            <div className="bg-white">
+                <div className="w-full flex items-center justify-center py-5">
+                    <div className="w-[70%] flex justify-between max-lg:w-[90%]">
+                        <div className="w-[40%] flex items-center max-lg:w-[48%] max-sm:hidden">
+                            <img src={forgotPassword} alt="login-images" />
                         </div>
-                        <div className="auth-right">
-                            <div className="auth-right-heading pb-5">
-                                <h4 className="text-white">Forgot Password</h4>
-                                <h2 className="text-white">Verify Email!</h2>
-                                <span>enter your registered email address</span>
+                        <div className="w-[42%] bg-white border-[1px] border-[#131921] dark:border-[#2dc26d]  rounded-lg p-[25px] max-lg:w-[48%] max-sm:w-full">
+                            <div className="pt-2 pb-4 ">
+                                <h4 className="text-black py-2 text-xl">Forgot Password</h4>
+                                <h2 className="text-black text-xl">Verify Email!</h2>
+                                <div className="py-2">
+                                    <span>Enter your registered email address</span>
+                                </div>
                             </div>
 
-                            <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-15">
-                                <CustomInput
-                                    type="email"
-                                    name="email"
-                                    placeholder="Email"
-                                    value={formik.values.email}
-                                    onChange={formik.handleChange('email')}
-                                    onBlur={formik.handleBlur('email')}
-                                />
-                                <div className="error">{formik.touched.email && formik.errors.email}</div>
+                            <form action="" onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
                                 <div>
-                                    <div>
-                                        <button className="btn-auth" type="submit">
-                                            SUBMIT
-                                        </button>
-                                    </div>
-                                    <div className="d-flex p-5">
-                                        <span>Having doubts? </span>
-                                        <Link to="/login">Go back</Link>
-                                    </div>
+                                    <CustomInput
+                                        type="email"
+                                        name="email"
+                                        placeholder="Email"
+                                        value={formik.values.email}
+                                        onChange={formik.handleChange('email')}
+                                        onBlur={formik.handleBlur('email')}
+                                        classes={formik.values.email ? 'valid' : 'invalid'}
+                                    />
+                                    <div className="error">{formik.touched.email && formik.errors.email}</div>
+                                </div>
+                                <button
+                                    className="bg-regal-light dark:bg-regal-dark-500 w-full py-[12px] font-[18px] cursor-pointer rounded text-white hover:opacity-95"
+                                    type="submit"
+                                >
+                                    SUBMIT
+                                </button>
+                                <div className="flex items-center justify-center py-4">
+                                    <span>Having doubts? </span>
+                                    <Link to="/login" className="ml-2 text-[#bf4800]">
+                                        Go back
+                                    </Link>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+            <Footer footerBtn={false} />
         </>
     );
 };

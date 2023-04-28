@@ -1,15 +1,17 @@
 import React from 'react';
 import Meta from '../../components/Meta';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CustomInput from '../../components/CustomInput';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { resetPassword } from '../../features/user/useSlide';
+import resetPass from '../../images/auth/reset-password.png';
+import Footer from '../../components/Footer';
+import Header from './header';
 
 const passwordSchema = yup.object({
     password: yup.string().required('Password No is Required'),
-    // confirmpassword: yup.string().required('Confirm Password No is Required'),
 });
 
 const ResetPassword = () => {
@@ -21,7 +23,6 @@ const ResetPassword = () => {
     const formik = useFormik({
         initialValues: {
             password: '',
-            // confirmpassword: '',
         },
         validationSchema: passwordSchema,
         onSubmit: (values) => {
@@ -32,64 +33,43 @@ const ResetPassword = () => {
 
     return (
         <>
-            <Meta title="Sign Up" />
-            <div className="container-auth">
-                <div className="preview-header">
-                    <div className="header-heading">
-                        <Link to="/" className="text-white">
-                            Dev Corner
-                        </Link>
-                    </div>
-                    <button className="preview-header-btn">Buy Now</button>
-                </div>
-                <div className="auth">
-                    <div className="auth-content">
-                        <div className="auth-left">
-                            <div className="auth-left-heading">
-                                <img src="" alt="images" />
-                                <h1>Dev Corner</h1>
-                            </div>
-                            <div className="left-description">
-                                <h2>
-                                    Collect & Sell <br />
-                                    Your <br />
-                                    AWESOMENFTs
-                                </h2>
-                            </div>
+            <Meta title="Reset Password" />
+            <Header title="RESET PASSWORD" />
+            <div className="bg-white">
+                <div className="w-full flex items-center justify-center py-5">
+                    <div className="w-[70%] flex justify-between max-lg:w-[90%]">
+                        <div className="w-[40%] flex items-center max-lg:w-[48%] max-sm:hidden">
+                            <img src={resetPass} alt="login-images" />
                         </div>
-                        <div className="auth-right">
-                            <div className="auth-right-heading pb-5">
-                                <h4 className="text-white">Forgot Password</h4>
-                                <h2 className="text-white">Set Password!</h2>
-                                <span>enter your registered email address</span>
+                        <div className="w-[42%] bg-white border-[1px] border-[#131921] dark:border-[#2dc26d]  rounded-lg p-[25px] max-lg:w-[48%] max-sm:w-full">
+                            <div className="pt-2 pb-4 ">
+                                <h4 className="text-black py-2 text-xl">Forgot Password</h4>
+                                <h2 className="text-black text-xl">Reset Password!</h2>
+                                <div className="py-2">
+                                    <span>Enter your registered email address</span>
+                                </div>
                             </div>
 
-                            <form action="" onSubmit={formik.handleSubmit} className="d-flex flex-column gap-15">
-                                <CustomInput
-                                    type="password"
-                                    name="password"
-                                    placeholder="Password"
-                                    value={formik.values.password}
-                                    onChange={formik.handleChange('password')}
-                                    onBlur={formik.handleBlur('password')}
-                                />
-                                <div className="error">{formik.touched.password && formik.errors.password}</div>
-
-                                {/* <CustomInput
-                                    type="password"
-                                    name="password"
-                                    placeholder="Password"
-                                    value={formik.values.confirmpassword}
-                                    onChange={formik.handleChange('confirmpassword')}
-                                    onBlur={formik.handleBlur('confirmpassword')}
-                                />
-                                <div className="error">
-                                    {formik.touched.confirmpassword && formik.errors.confirmpassword}
-                                </div> */}
+                            <form action="" onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
+                                <div>
+                                    <CustomInput
+                                        type="password"
+                                        name="password"
+                                        placeholder="Password"
+                                        value={formik.values.password}
+                                        classes={formik.values.password ? 'valid' : 'invalid'}
+                                        onChange={formik.handleChange('password')}
+                                        onBlur={formik.handleBlur('password')}
+                                    />
+                                    <div className="error">{formik.touched.password && formik.errors.password}</div>
+                                </div>
 
                                 <div>
                                     <div>
-                                        <button className="btn-auth" type="submit">
+                                        <button
+                                            className="bg-regal-light dark:bg-regal-dark-500 w-full py-[12px] font-[18px] cursor-pointer rounded text-white hover:opacity-95"
+                                            type="submit"
+                                        >
                                             SUBMIT
                                         </button>
                                     </div>
@@ -99,6 +79,7 @@ const ResetPassword = () => {
                     </div>
                 </div>
             </div>
+            <Footer footerBtn={false} />
         </>
     );
 };
