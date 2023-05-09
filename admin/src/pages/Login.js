@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import CustomInput from '../components/CustomInput';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from './../features/auth/authSlice';
 
@@ -10,9 +10,9 @@ const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    let userSchema = Yup.object().shape({
-        email: Yup.string().email('Email Should be Valid').required('Email is Required'),
-        password: Yup.string().required('Password is Required'),
+    let userSchema = yup.object().shape({
+        email: yup.string().email('Email Should be Valid').required('Email is Required'),
+        password: yup.string().required('Password is Required'),
     });
 
     const formik = useFormik({
@@ -27,22 +27,25 @@ const Login = () => {
         },
     });
 
-    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
+    const authState = useSelector((state) => state);
+
+    const { user, isLoading, isError, isSuccess, message } = authState.auth;
 
     useEffect(() => {
         if (!user == null || isSuccess) {
             navigate('admin');
         } else {
-            console.log('not');
+            navigate('');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user, isLoading, isError, isSuccess, message]);
+    }, [user, isLoading, isError, isSuccess]);
 
     return (
         <div className="py-5" style={{ background: '#ffd333', minHeight: '100vh' }}>
             <div className="my-5 w-25 bg-white rounded-3 mx-auto p-4 position-relative" style={{ top: '100px' }}>
                 <h4 className="text-center title">Login</h4>
                 <p className="text-center">Login to your account to continue.</p>
+                <div className="error text-center">{message.message === 'Rejected' ? 'You are not an Admin' : ''}</div>
                 <form action="" onSubmit={formik.handleSubmit}>
                     <CustomInput
                         type="text"
