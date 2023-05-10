@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table } from 'antd';
+import { useDispatch } from 'react-redux';
+import { getColors } from '../features/color/colorSlide';
 
 const columns = [
     {
@@ -31,6 +33,12 @@ for (let i = 0; i < 46; i++) {
 }
 
 const ColorList = () => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getColors());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <div>
             <h3 className="mb-4 title">Color</h3>

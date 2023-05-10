@@ -6,6 +6,7 @@ import brandReducer from '../features/brand/brandSlide';
 import pCategoryReducer from '../features/pcategory/pcategorySlide';
 import bCategoryReducer from '../features/bcategory/bcategorySlide';
 import blogReducer from '../features/blogs/blogSlide';
+import colorReducer from '../features/color/colorSlide';
 
 export const store = configureStore({
     reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
         pCategory: pCategoryReducer,
         bCategory: bCategoryReducer,
         blogs: blogReducer,
+        color: colorReducer,
     },
 });
