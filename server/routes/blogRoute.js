@@ -1,35 +1,28 @@
-const express = require("express");
+const express = require('express');
+const { isAdmin, authMiddleware } = require('../middlewares/authMiddleware');
 const {
-  createBlog,
-  updateBlog,
-  getBlog,
-  getAllBlogs,
-  deleteBlog,
-  liketheBlog,
-  disliketheBlog,
-  uploadImages,
-} = require("../controller/blogController");
-const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
-const { blogImgResize, uploadPhoto } = require("../middlewares/uploadImage");
+    createBlog,
+    updateBlog,
+    getBlog,
+    getAllBlogs,
+    deleteBlog,
+    liketheBlog,
+    disliketheBlog,
+    uploadImages,
+} = require('../controller/blogCtrl');
+const { uploadPhoto, blogImgResize } = require('../middlewares/uploadImage');
 const router = express.Router();
 
-router.post("/", authMiddleware, isAdmin, createBlog);
-router.put(
-  "/upload/:id",
-  authMiddleware,
-  isAdmin,
-  uploadPhoto.array("images", 2),
-  blogImgResize,
-  uploadImages
-);
-router.put("/likes", authMiddleware, liketheBlog);
-router.put("/dislikes", authMiddleware, disliketheBlog);
+router.post('/', authMiddleware, isAdmin, createBlog);
 
-router.put("/:id", authMiddleware, isAdmin, updateBlog);
+router.put('/upload/:id', authMiddleware, isAdmin, uploadPhoto.array('images', 2), blogImgResize, uploadImages);
 
-router.get("/:id", getBlog);
-router.get("/", getAllBlogs);
+router.put('/likes', authMiddleware, liketheBlog);
+router.put('/dislikes', authMiddleware, disliketheBlog);
 
-router.delete("/:id", authMiddleware, isAdmin, deleteBlog);
+router.put('/:id', authMiddleware, isAdmin, updateBlog);
+router.get('/:id', getBlog);
+router.get('/', getAllBlogs);
+router.delete('/:id', authMiddleware, deleteBlog);
 
 module.exports = router;
