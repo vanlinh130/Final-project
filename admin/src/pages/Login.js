@@ -54,6 +54,7 @@ const Login = () => {
                         i_id="email"
                         val={formik.values.email}
                         onCh={formik.handleChange('email')}
+                        onBl={formik.handleBlur('email')}
                     />
                     <div className="error">
                         {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
@@ -65,6 +66,7 @@ const Login = () => {
                         i_id="pass"
                         val={formik.values.password}
                         onCh={formik.handleChange('password')}
+                        onBl={formik.handleBlur('password')}
                     />
                     <div className="error">
                         {formik.touched.password && formik.errors.password ? <div>{formik.errors.password}</div> : null}

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'); // Erase if already required
 
 // Declare the Schema of the Mongo model
+
 var productSchema = new mongoose.Schema(
     {
         title: {
@@ -44,10 +45,13 @@ var productSchema = new mongoose.Schema(
                 url: String,
             },
         ],
-        color: {
-            type: String,
-            required: true,
-        },
+        color: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Color',
+            },
+        ],
+        tags: String,
         ratings: [
             {
                 star: Number,
@@ -60,9 +64,7 @@ var productSchema = new mongoose.Schema(
             default: 0,
         },
     },
-    {
-        timestamps: true,
-    },
+    { timestamps: true },
 );
 
 //Export the model
