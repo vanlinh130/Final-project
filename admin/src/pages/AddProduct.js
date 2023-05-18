@@ -6,13 +6,14 @@ import 'react-quill/dist/quill.snow.css';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import Multiselect from 'react-widgets/Multiselect';
+import 'react-widgets/styles.css';
+import Dropzone from 'react-dropzone';
+// import { Select } from 'antd';
 
 import { getBrands } from './../features/brand/brandSlide';
 import { getCategories } from '../features/pcategory/pcategorySlide';
 import { getColors } from '../features/color/colorSlide';
-import Multiselect from 'react-widgets/Multiselect';
-import 'react-widgets/styles.css';
-import Dropzone from 'react-dropzone';
 import { deleteImg, uploadImg } from '../features/upload/uploadSlide';
 import { createProducts } from '../features/product/productSlice';
 
@@ -42,9 +43,9 @@ const AddProduct = () => {
     const colorState = useSelector((state) => state.color.colors);
     const imgState = useSelector((state) => state.upload.images);
 
-    const colors = [];
+    const coloropt = [];
     colorState.forEach((i) => {
-        colors.push({
+        coloropt.push({
             _id: i._id,
             color: i.title,
         });
@@ -80,9 +81,9 @@ const AddProduct = () => {
         },
     });
 
-    const [desc, setDesc] = useState();
-    const handleDesc = (e) => {
-        setDesc(e);
+    const handleColors = (e) => {
+        setColor(e);
+        console.log(color);
     };
 
     return (
@@ -154,7 +155,17 @@ const AddProduct = () => {
                 </select>
                 <div className="error">{formik.touched.category && formik.errors.category}</div>
 
-                <Multiselect name="color" dataKey="id" textField="color" data={colors} onChange={(e) => setColor(e)} />
+                {/* <Multiselect name="color" dataKey="id" textField="color" data={colors} onChange={(e) => setColor(e)} /> */}
+
+                {/* <Select
+                    mode="multiple"
+                    allowClear
+                    className="w-100"
+                    placeholder="Select colors"
+                    defaultValue={color}
+                    onChange={(i) => handleColors(i)}
+                    options={coloropt}
+                /> */}
                 <div className="error">{formik.touched.color && formik.errors.color}</div>
 
                 <CustomInput

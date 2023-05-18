@@ -223,7 +223,7 @@ const Home = () => {
                     </div>
                 </Container>
 
-                <HomeFloat />
+                {/* <HomeFloat /> */}
 
                 <Container class1="blog-wrapper py-5 home-wrapper-2">
                     <div className="w-full">
